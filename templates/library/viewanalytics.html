@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Analytics</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .analytics-header {
+      margin-bottom: 30px;
+    }
+    .section-title {
+      margin-top: 30px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .download-btn {
+      margin-bottom: 20px;
+    }
+    .table-responsive {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+  {% include "library/navbaradmin.html" %}
+  
+  <div class="container mt-5">
+    <div class="row analytics-header">
+      <div class="col-md-8">
+        <h1 class="p-3 mb-2 bg-primary text-white rounded">📊 Book Borrowing Analytics</h1>
+      </div>
+      <div class="col-md-4 text-right">
+        <a href="{% url 'download_analytics_pdf' %}" class="btn btn-success download-btn mt-4">
+          <i class="fas fa-file-pdf"></i> Download PDF Report
+        </a>
+      </div>
+    </div>
+    
+    <!-- Most Borrowed Books Section -->
+    <div class="row">
+      <div class="col-12">
+        <h3 class="section-title">📚 Most Borrowed Books</h3>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Book Name</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Author</th>
+                <th scope="col">Category</th>
+                <th scope="col">Borrow Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in book_borrowing_data %}
+              <tr>
+                <td>{{ data.book__name }}</td>
+                <td>{{ data.isbn }}</td>
+                <td>{{ data.book__author }}</td>
+                <td>{{ data.book__category }}</td>
+                <td><span class="badge badge-primary">{{ data.borrow_count }}</span></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center">No data available</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Most Popular Authors Section -->
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="section-title">✍️ Most Popular Authors</h3>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Author Name</th>
+                <th scope="col">Borrow Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in author_borrowing_data %}
+              <tr>
+                <td>{{ data.book__author }}</td>
+                <td><span class="badge badge-info">{{ data.borrow_count }}</span></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="2" class="text-center">No data available</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Most Popular Categories Section -->
+      <div class="col-md-6">
+        <h3 class="section-title">🏷️ Most Popular Categories</h3>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Category Name</th>
+                <th scope="col">Borrow Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in category_borrowing_data %}
+              <tr>
+                <td>{{ data.book__category }}</td>
+                <td><span class="badge badge-success">{{ data.borrow_count }}</span></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="2" class="text-center">No data available</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
