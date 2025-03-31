@@ -14,6 +14,9 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime, timedelta, date
 from django.core.mail import send_mail
+from django.contrib.auth import logout
+from django.contrib import messages
+from django.shortcuts import redirect
 # from librarymanagement.settings import EMAIL_HOST_USER
 
 
@@ -435,3 +438,9 @@ def contactus_view(request):
                       ['wapka1503@gmail.com'], fail_silently=False)
             return render(request, 'library/contactussuccess.html')
     return render(request, 'library/contactus.html', {'form': sub})
+
+
+def custom_logout_view(request):
+    logout(request)
+    messages.success(request, "You have been successfully logged out!")
+    return redirect('/')
